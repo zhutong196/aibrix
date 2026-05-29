@@ -241,7 +241,8 @@ func (r *pdRouter) preparePrefillPayload(routingCtx *types.RoutingContext, pod *
 	// remote_block_ids are populated by updateRoutingContextWithKVTransferParams
 	// after the prefill response arrives. NIXL mode omits this field entirely
 	// because the backend manages KV transfer through its own mechanism.
-	if llmEngine == VLLMEngine && aibrixKVConnectorType == KVConnectorTypeSHFS {
+	kvConnectorType := selectKvConnectorType(pod.Labels[KVConnectorTypeIdentifier])
+	if llmEngine == VLLMEngine && kvConnectorType == KVConnectorTypeSHFS {
 		completionRequest["kv_transfer_params"] = map[string]any{
 			"do_remote_decode":  true,
 			"do_remote_prefill": false,
@@ -359,7 +360,8 @@ func (r *pdRouter) updateRoutingContextWithKVTransferParams(routingCtx *types.Ro
 		return fmt.Errorf("failed to unmarshal original request body: %w", err)
 	}
 
-	if aibrixKVConnectorType == KVConnectorTypeNIXL {
+	kvConnectorType := selectKvConnectorType(prefillPod.Labels[KVConnectorTypeIdentifier])
+	if kvConnectorType == KVConnectorTypeNIXL {
 		originalRequest["disagg_prefill_resp"] = responseData
 
 		updatedReqBody, err := sonic.Marshal(originalRequest)

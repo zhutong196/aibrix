@@ -78,8 +78,9 @@ const (
 
 const (
 	// KV connector types for different backends
-	KVConnectorTypeSHFS = "shfs" // Default - AIBrix SHFS/KVCacheManager (GPU)
-	KVConnectorTypeNIXL = "nixl" // NIXL for Neuron (uses disagg_prefill_resp wrapper)
+	KVConnectorTypeIdentifier = "kv-connector-type"
+	KVConnectorTypeSHFS       = "shfs" // Default - AIBrix SHFS/KVCacheManager (GPU)
+	KVConnectorTypeNIXL       = "nixl" // NIXL for Neuron (uses disagg_prefill_resp wrapper)
 
 	HeaderPrefillTargetPodIP = "prefill-target-pod-ip"
 	HeaderPrefillTargetPod   = "prefill-target-pod"

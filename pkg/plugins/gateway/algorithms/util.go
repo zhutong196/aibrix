@@ -151,3 +151,13 @@ func anySliceForJSON(v any) ([]any, bool) {
 	}
 	return out, true
 }
+
+// selectKvConnectorType Allow per-pod KV connector type override via pod label to support mixed PD deployments.
+func selectKvConnectorType(value string) string {
+	switch value {
+	case KVConnectorTypeNIXL, KVConnectorTypeSHFS:
+		return value
+	default:
+		return aibrixKVConnectorType
+	}
+}
